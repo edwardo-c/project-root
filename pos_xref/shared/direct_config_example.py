@@ -5,6 +5,7 @@ For test, ensure test_mode = True in runner function, intended to be passed from
 import pandas as pd
 from typing import Dict
 from os import remove
+from pos_xref.shared import utils as u
 from utils.utils_io import gen_safe_excel_file
 
 DIRECT_CUST_FILE_PATH = r"C:\My\Shared\Excel\File\direct_customers_export.xlsx" # prod data
@@ -18,7 +19,6 @@ def capture_direct_customers_df(test_env:bool=True):
         with standardized column names: [
             'acct_num', 'customer_name', 'acct_group', 'bill_to_zip', 'bill_to_state'
             ]
-        
     '''
     # read file info
     info = DirectCustomersFileInfo(test_env)
@@ -49,26 +49,16 @@ def _standardized_df(df:pd.DataFrame, info) -> pd.DataFrame:
 
     '''
     # confirm expected headers existence
-    _confirm_headers(df.columns, info.EXPECTED_COLUMNS)
+    u._confirm_headers(df.columns, info.EXPECTED_COLUMNS)
 
     # truncate data frame to pertinent columns only
     df = df[info.EXPECTED_COLUMNS]
 
     # rename columns to spec
-    df = df.rename(columns=_build_column_rename_map(df.columns))
+    df = df.rename(columns=u._build_column_rename_map(df.columns, STANDARDIZED_COLUMNS))
 
     return df
 
-def _confirm_headers(cols, expected_columns) ->bool:
-
-    for header in expected_columns:
-        if not header in cols:
-            raise KeyError(f"Expected header {header} not found")
-    return True
-
-def _build_column_rename_map(curr_cols) -> Dict:
-    '''build a dict to rename current columns to standardized columns'''
-    return {col: st_col for col, st_col in zip(curr_cols, STANDARDIZED_COLUMNS)}
 
 ## class contianing file info to capture df
 class DirectCustomersFileInfo:

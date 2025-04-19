@@ -4,16 +4,13 @@ This script supports a test mode that treats test files as if they are live data
 import pandas as pd
 import os
 from typing import Dict
-
+from pos_xref.shared import utils as u
 from utils.utils_io import gen_safe_excel_file
 
 STANDARDIZED_COLUMNS = ['customer_name', 'bill_to_zip', 'bill_to_state']
-
-# Customize these paths for your environment
 PROD_DIR = r"X:\Your\Real\Prod\Path"
 TEST_DIR = r".\pos_xref\data\raw"  # Recommended test folder inside the repo
 EXT = ".xlsx"
-WS = "POS"
 
 def get_raw_pos_customers(year: int, test_env:bool=True) -> pd.DataFrame:
     '''
@@ -43,7 +40,7 @@ def get_raw_pos_customers(year: int, test_env:bool=True) -> pd.DataFrame:
     ''' TODO: clean zip codes to five digits and ensure two letter states'''
     
     # get column mapping for renaming
-    column_header_map = _build_column_rename_map(info.column_headers())
+    column_header_map = u._build_column_rename_map(info.column_headers(), STANDARDIZED_COLUMNS)
     
     # prepare truncated data frame (rename headers and drop duplicates inspecting all columns)
     df = df[info.column_headers()].rename(columns=column_header_map).drop_duplicates()
@@ -52,21 +49,6 @@ def get_raw_pos_customers(year: int, test_env:bool=True) -> pd.DataFrame:
     os.remove(safe_path)
     
     return df
-
-def _build_column_rename_map(curr_cols) -> Dict:
-    '''
-    build a mapping (dict) to rename columns
-    args:
-        curr_cols: name of the current columns. intended to be passed in as df.columns
-    return: 
-        dict mapped to the standardized column names
-    example input:
-        df = pd.DataFrame({'column_a':[1,2,3], 'column_b':[4,5,6], 'column_c':[7,8,9]})
-        _build_column_rename_map(df.columns)
-    example output:
-        {'column_a': 'sold_to_name', 'column_b': 'bill_to_zip', 'column_c': 'bill_to_state'}    
-    '''
-    return {col:st_col for col, st_col in zip(curr_cols, STANDARDIZED_COLUMNS)}
 
 class IncentiveCompInfo():
     ''' details info required to accurately file excel file, specific for the pos_xref'''
@@ -81,7 +63,7 @@ class IncentiveCompInfo():
         else:
             self.base_dir = PROD_DIR
         self.year = year
-        self.ws = WS
+        self.ws = "POS"
 
     def file_path(self):
         if self.year >= 2025:
