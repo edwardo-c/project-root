@@ -1,0 +1,1 @@
+Folder designed to hold "working" data; staging area for files. 
