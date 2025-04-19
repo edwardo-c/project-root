@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual Environment
+**/.venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Mac/Linux/Windows junk
+.DS_Store
+Thumbs.db
+
+# VS Code settings
+.vscode/
+
+# Sensitive config
+pos_xref/shared/pos_config.py
+pos_xref/shared/direct_config.py
