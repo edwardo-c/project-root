@@ -9,11 +9,6 @@ def gen_safe_excel_file(orig_file_path: str) -> str:
     
     Args:
         file_path (str): Original Excel file path.
-        sheet_name (str): Sheet to read.
-        header (int): Header row.
-        engine (str): Engine to use for reading. Defaults to 'openpyxl'.
-        usecols (str, list): Optional; columns to load.
-    
     Returns:
         file path of temp file to read from
     '''

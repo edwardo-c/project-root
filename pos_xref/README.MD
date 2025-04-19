@@ -1,6 +1,8 @@
 # POS Xref Pipeline
 
-This project is designed to safely extract key customer data from Master POS (point of sale) Excel files stored on a shared network.  
+This project is designed to safely extract key customer data from Master POS (point of sale) Excel files and direct customers file
+stored on a shared network.  
+
 It's part of a larger internal tooling effort to standardize and automate cross-referencing of POS customer name variations and linking back to direct customers.
 
 > **Problem this solves**:  
@@ -12,8 +14,10 @@ It's part of a larger internal tooling effort to standardize and automate cross-
 
 - Safe reading of shared Excel files without locking them
 - Extracts and standardizes fields for years 2020–2025:
-  - `sold_to_name`
-  - `bill_to_zip`
+  - `acct_num`  (only for direct accounts)
+  - `sold_to_name` (the name in the POS data)
+  - `acct_group` (only for direct accounts)
+  - `bill_to_zip` 
   - `bill_to_state`
 - Clean, modular project structure with virtual environment
 
@@ -35,16 +39,16 @@ It's part of a larger internal tooling effort to standardize and automate cross-
 
     pip install -r pos_xref/requirements.txt
 
-4. Copy the config template:
+4. Copy the config templates:
 
     cp pos_xref/pos_config_example.py pos_xref/pos_config.py
+    cp pos_xref/pos_config_example.py pos_xref/direct_config.py
 
-5. Open pos_config.py and:
+5. Open pos_config.py and direct_config:
 
-    Set test_env = True
-
-    Ensure TEST_DIR points to ./pos_xref/data/raw/ where test files are included
+    Ensure TEST_DIR in pos_config.py points to ./pos_xref/data/raw/ where test files are included
+    Ensure TEST_FILE_PATH points to the direct customers xlsx file
 
 6. Run the script
 
-    python -m pos_xref.main
+    python -m run_pos_xref.py
