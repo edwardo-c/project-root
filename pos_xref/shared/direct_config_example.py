@@ -1,22 +1,18 @@
-'''Example for public repo
+'''
+Example for public repo
 For test, ensure test_mode = True in runner function, intended to be passed from main.py in pos_xref 
 '''
-
 import pandas as pd
 from typing import Dict
 from os import remove
 from utils.utils_io import gen_safe_excel_file
 
-
-# customize these file paths for your environment
-
 DIRECT_CUST_FILE_PATH = r"C:\My\Shared\Excel\File\direct_customers_export.xlsx" # prod data
 TEST_FILE_PATH = r".\pos_xref\data\raw\direct_customers_export.xlsx" # Recommended test folder inside the repo
 STANDARDIZED_COLUMNS = ['acct_num', 'customer_name', 'acct_group', 'bill_to_zip', 'bill_to_state']
 
-
 ## runner function: 
-def capture_direct_customers_df(test_mode:bool=True):
+def capture_direct_customers_df(test_env:bool=True):
     '''
         return a df containing only pertinant columns from the direct customers file
         with standardized column names: [
@@ -25,7 +21,7 @@ def capture_direct_customers_df(test_mode:bool=True):
         
     '''
     # read file info
-    info = DirectCustomersFileInfo(test_mode)
+    info = DirectCustomersFileInfo(test_env)
     
     # create a safe (local copy) version to read from
     local_copy = gen_safe_excel_file(info.file_path())
@@ -59,7 +55,7 @@ def _standardized_df(df:pd.DataFrame, info) -> pd.DataFrame:
     df = df[info.EXPECTED_COLUMNS]
 
     # rename columns to spec
-    df.rename(columns=_build_column_rename_map(df.columns))
+    df = df.rename(columns=_build_column_rename_map(df.columns))
 
     return df
 
@@ -76,11 +72,11 @@ def _build_column_rename_map(curr_cols) -> Dict:
 
 ## class contianing file info to capture df
 class DirectCustomersFileInfo:
-    def __init__(self, test_mode):
-        self.test_mode = test_mode
+    def __init__(self, test_env):
+        self.test_env = test_env
 
     def file_path(self):
-        if self.test_mode:
+        if self.test_env:
             return TEST_FILE_PATH
         return DIRECT_CUST_FILE_PATH
 

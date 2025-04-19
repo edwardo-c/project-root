@@ -46,8 +46,8 @@ It's part of a larger internal tooling effort to standardize and automate cross-
 
 5. Open pos_config.py and direct_config:
 
-    Ensure TEST_DIR in pos_config.py points to ./pos_xref/data/raw/ where test files are included
-    Ensure TEST_FILE_PATH points to the direct customers xlsx file
+    Ensure TEST_DIR in pos_config.py points to .\pos_xref\data\raw\ where test files are included
+    Ensure TEST_FILE_PATH in direct_config.py points to .\pos_xref\data\raw\direct_customers_export.xlsx
 
 6. Run the script
 
