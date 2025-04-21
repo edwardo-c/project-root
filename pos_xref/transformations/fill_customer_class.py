@@ -1,6 +1,6 @@
 from typing import List
 import pandas as pd
-from transformations.normalize_data import normalize_name, standardize_postal_code
+from pos_xref.transformations.normalize_data import normalize_name, standardize_postal_code
 
 def get_customer_classes(df:pd.DataFrame):
     '''
