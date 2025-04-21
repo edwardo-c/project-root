@@ -19,6 +19,23 @@ def normalize_name(name:str) -> str:
 
     return name_minus_suffixes.strip().lower()
 
-def clean_zip_code():
-    '''TODO: turns a zip code into a 5 digit zip or standardizes canada zips (upper case, with a space)'''
-    pass
+def standardize_postal_code(postal_code):
+    '''converts a postal code into 5 digits or standardizes canada zips ("A1A 1A1")'''
+    # TODO: convert the postal codes column to strings prior to clean_postal_code call
+
+    # capture only letters, 3 letters = CA postal code, or first five digits
+    ca_pattern = re.compile(r'[a-z]', flags=re.IGNORECASE)
+    us_pattern = re.compile(r'[0-9]', flags=re.IGNORECASE)
+
+    postal_code = postal_code.strip()
+    letters = re.findall(ca_pattern, postal_code)
+    numbers = re.findall(us_pattern, postal_code)
+
+    if len(letters) == 3:
+        # ensure 3 characters, a space, two characters structure
+        return postal_code[:3] + ' ' + postal_code[-3:]
+    elif len(numbers) >= 5:
+        # ensure 5 digit only structure, remove dash and last 4 digits
+        return ''.join(numbers[:5])
+    else:
+        return postal_code
