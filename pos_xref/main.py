@@ -8,8 +8,7 @@ def main(test_env:bool, year):
     try:
         df = return_input_data(test_env) # get input data
         d = get_customer_classes(df)
-        print("dictionary for data captured")
-        print(df.head())
+        print(d)
         
     except Exception as e:
         print(f"Failed to load input data")
