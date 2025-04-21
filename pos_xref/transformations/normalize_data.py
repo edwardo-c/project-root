@@ -1,6 +1,6 @@
 import re
 
-def normalize_name(name:str):
+def normalize_name(name:str) -> str:
     '''
     normalizes seller name by returning lower case, removes non letter characters
     strips white space, and removes common suffixes. 

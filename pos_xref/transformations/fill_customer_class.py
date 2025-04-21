@@ -1,5 +1,6 @@
 from typing import List
 import pandas as pd
+from transformations.normalize_data import normalize_name
 
 def get_customer_classes(df:pd.DataFrame):
     '''
@@ -23,16 +24,15 @@ def get_customer_classes(df:pd.DataFrame):
             
     return customer_dict
 
-
-
 class Customer:
-    def __init__(self, original_name: str, normalized_name: str, 
-                 id: str, fuzzy_matches: List[str] = None
+    def __init__(self, original_name: str, 
+                 id: str, 
                  ):
         self.original_name = original_name
-        self.normalized_name = normalized_name
+        self.normalized_name = normalize_name(original_name)
         self.id = id
-        self.fuzzy_matches = fuzzy_matches
-    
+        self.fuzzy_matches = "" #TODO: function to return fuzzy matches
+        
+
     def __repr__(self):
         return f"Customer(name={self.original_name}, id={self.id})"
