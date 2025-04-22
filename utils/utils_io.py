@@ -31,6 +31,33 @@ def read_safe_excel_file(orig_file_path: str, sheet_name: str, header_row: int =
     except Exception as e:
         raise RuntimeError(f"Failed to read Excel file safely: {e}")
 
+def read_safe_csv_file(orig_file_path: str, sheet_name: str, header_row: int = 0) -> Dict:
+    '''
+    Makes a temporary copy of the Excel file and reads from that instead.
+    
+    Args:
+        file_path (str): Original Excel file path.
+        sheet_name (str): name of the worksheet to read
+        header_row (int): row index for headers
+    Returns:
+        Dict containing file path to temp file and dataframe captured from file
+    '''
+    try:
+        # create a temporary file path
+        temp_dir = tempfile.gettempdir()
+        temp_path = os.path.join(temp_dir, os.path.basename(orig_file_path))
+
+        # copy original file to temp
+        shutil.copy2(orig_file_path, temp_path)
+
+        # read temporary file data frame
+        df = pd.read_csv(temp_path)
+
+        return {'temp_file_path': temp_path, 'safe_data_frame': df}
+    
+    except Exception as e:
+        raise RuntimeError(f"Failed to read Excel file safely: {e}")
+
 
 def del_safe_path(safe_path_info: Dict):
     os.remove(safe_path_info['temp_file_path'])
