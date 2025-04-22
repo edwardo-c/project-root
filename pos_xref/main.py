@@ -1,5 +1,5 @@
 from pos_xref.shared.combine_input_data import return_input_data
-from pos_xref.extract.matching_pipeline import get_previous_matches
+from pos_xref.extract.matching_pipeline import get_processed_matches
 # for public repo, test_env should be True from project_root/run_pos_xref.py
 
 def main(test_env:bool, year):
@@ -9,7 +9,7 @@ def main(test_env:bool, year):
         df = return_input_data(test_env) # get input data
 
         # TODO: generate fuzzy matches data frame
-        previous_matches = get_previous_matches(test_env)
+        processed_matches = get_processed_matches(test_env)
 
         # TODO: export matches to processed file 
 
@@ -17,7 +17,7 @@ def main(test_env:bool, year):
 
         # TODO: move processed to output data - seperating matches and those to be reviewed
 
-        print(previous_matches)
+        print(processed_matches)
         
     except Exception as e:
         print(f"Failed to load input data")
