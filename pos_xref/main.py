@@ -9,7 +9,7 @@ def main(test_env:bool, year):
         df = return_input_data(test_env) # get input data
 
         # TODO: generate fuzzy matches data frame
-        current_matches = get_previous_matches(test_env)
+        previous_matches = get_previous_matches(test_env)
 
         # TODO: export matches to processed file 
 
@@ -17,7 +17,7 @@ def main(test_env:bool, year):
 
         # TODO: move processed to output data - seperating matches and those to be reviewed
 
-        print(current_matches)
+        print(previous_matches)
         
     except Exception as e:
         print(f"Failed to load input data")
