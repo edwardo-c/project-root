@@ -21,7 +21,7 @@ def return_input_data(test_env:bool):
     return output_df
 
 def _normalize_data(df:pd.DataFrame) -> pd.DataFrame:
-    '''Vertorized application of normalization functions'''
+    '''Vectorized normalization of customer names, postal codes, and states'''
 
     # convert columns to string type data types and dedupe
     df = df.astype({col:str for col in df.columns}).drop_duplicates()
