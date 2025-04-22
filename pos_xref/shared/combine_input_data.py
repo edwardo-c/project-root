@@ -3,8 +3,9 @@ import pos_xref.shared.direct_config as dc
 import pos_xref.shared.pos_config as pc
 import pos_xref.shared.utils as u
 import utils.utils_io as uio
+import pos_xref.transformations.normalize_data as nd
 
-STANDARDIZED_COLUMNS = ['acct_num', 'customer_name', 'acct_group', 'bill_to_zip', 'bill_to_state']
+STANDARDIZED_COLUMNS = ['acct_num', 'customer_name', 'acct_group', 'bill_to_state', 'bill_to_postal_code']
 
 def return_input_data(test_env:bool):
     
@@ -12,12 +13,30 @@ def return_input_data(test_env:bool):
     output_df = pd.DataFrame()
 
     for info in files_info:
-        df = _standardize_dataframe(info)
+        df = _extract_dataframe(info)
         output_df = pd.concat([df, output_df])
     
+    output_df = _normalize_data(output_df)
+
     return output_df
 
-def _standardize_dataframe(info) -> pd.DataFrame:
+def _normalize_data(df:pd.DataFrame) -> pd.DataFrame:
+    '''Vertorized application of normalization functions'''
+
+    # convert columns to string type data types and dedupe
+    df = df.astype({col:str for col in df.columns}).drop_duplicates()
+
+    df['normalized_name'] = df['customer_name'].apply(nd.normalize_name)
+
+    # normalize postal codes
+    df['bill_to_postal_code'] = df['bill_to_postal_code'].apply(nd.normalize_postal_code)
+
+    # TODO: Normalize states
+    df['bill_to_state'] = df['bill_to_state'].apply(str.upper)
+
+    return df
+
+def _extract_dataframe(info) -> pd.DataFrame:
 
     # create a safe (local copy) version, return the file path and data frame
     safe_path_info = uio.read_safe_excel_file(
@@ -37,17 +56,13 @@ def _standardize_dataframe(info) -> pd.DataFrame:
 
     # customer type specific data frame modifications; 
     # for now only the renaming of columns is different
+
     if info.cust_type == "Direct":
         df = df.rename(columns=u._column_rename_map(df.columns, STANDARDIZED_COLUMNS))
     elif info.cust_type == "POS":
         df = pc.rename_columns(df)
     else:
         raise KeyError(f"unspecified customer type")
-
-    # convert remaining columns to string type data types
-    df = df.astype({st_col:str for st_col in df.columns})
-
-    df = df.drop_duplicates()
 
     # delete safe version
     uio.del_safe_path(safe_path_info)

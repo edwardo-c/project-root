@@ -19,7 +19,7 @@ def normalize_name(name:str) -> str:
 
     return name_minus_suffixes.strip().lower()
 
-def standardize_postal_code(postal_code):
+def normalize_postal_code(postal_code):
     '''converts a postal code into 5 digits or standardizes canada zips ("A1A 1A1")'''
     # TODO: convert the postal codes column to strings prior to clean_postal_code call
 

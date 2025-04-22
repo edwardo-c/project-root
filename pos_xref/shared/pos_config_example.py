@@ -4,7 +4,7 @@ This script supports a test mode that treats test files as if they are live data
 import pandas as pd
 import os
 
-STANDARDIZED_COLUMNS = ['customer_name', 'bill_to_zip', 'bill_to_state']
+STANDARDIZED_COLUMNS = ['customer_name', 'bill_to_postal_code', 'bill_to_state']
 PROD_DIR = r"X:\Your\Real\Prod\Path"
 TEST_DIR = r".\pos_xref\data\raw"  # Recommended test folder inside the repo
 EXT = ".xlsx"
