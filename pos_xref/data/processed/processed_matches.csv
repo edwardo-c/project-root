@@ -1,2 +1,2 @@
 ﻿acct_num,normalized_name,customer_name,acct_group,bill_to_state,bill_to_postal_code,match_type
-TST111111,test company pro,TEST COMPANY PRO INC.,,IL,60502,fuzzy
+TST111111,test company pro,TEST COMPANY PRO INC.,,IL,60502,test

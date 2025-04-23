@@ -1,5 +1,5 @@
-TEST_MATCHES_FILE_PATH = r"C:\Users\eddiec11us\Documents\vs code workspaces\project_root\pos_xref\data\output\matches.csv"
-PROD_MATCHES_FILE_PATH = r"H:\My\Prod\Path\processed_matches.csv"
+TEST_MATCHES_FILE_PATH = r"C:\My\test\Path\matches.csv" # for repo, point this to .\data\output\matches.csv
+PROD_MATCHES_FILE_PATH = r"H:\My\Prod\Path\processed_matches.csv" # not needed for repo, used in internal prod
 
 class Matches():
     def __init__(self, test_env):

@@ -1,26 +1,24 @@
 from pos_xref.shared.combine_input_data import return_input_data
-from pos_xref.extract.matching_pipeline import get_processed_matches
+import pos_xref.extract.matching_pipeline as mp
 # for public repo, test_env should be True from project_root/run_pos_xref.py
 
 def main(test_env:bool, year):
     
-    try:
-        # get current customer data (all POS and direct)
-        df = return_input_data(test_env) # get input data
+    # try:
 
-        # TODO: generate fuzzy matches data frame
-        processed_matches = get_processed_matches(test_env)
+    # get current customer data (all POS and direct)
+    df = return_input_data(test_env) # get input data
 
-        # TODO: export matches to processed file 
+    # get previous matches
+    previous_matches = mp.get_previous_matches(test_env=test_env)
 
-        # User than manually confirms matches and mis matches
+    # fill export data frame with new matches (exclude previous matches and self matches)
+    
 
-        # TODO: move processed to output data - seperating matches and those to be reviewed
-
-        print(processed_matches)
+    print(previous_matches)
         
-    except Exception as e:
-        print(f"Failed to load input data")
+    # except Exception as e:
+    #     print(f"Failed to load input data")
 
 if __name__ == "__main__":
     main()
