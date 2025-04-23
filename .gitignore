@@ -20,3 +20,4 @@ Thumbs.db
 pos_xref/shared/pos_config.py
 pos_xref/shared/direct_config.py
 pos_xref/shared/processed_matches_config.py
+pos_xref/shared/matches_config.py
