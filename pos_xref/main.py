@@ -9,13 +9,21 @@ def main(test_env:bool, year):
     # get current customer data (all POS and direct)
     df = return_input_data(test_env) # get input data
 
-    # get previous matches
-    previous_matches = mp.get_previous_matches(test_env=test_env)
-
-    # fill export data frame with new matches (exclude previous matches and self matches)
+    # TODO: import self matches into data/output/matches.csv
     
 
-    print(previous_matches)
+    # get previous matches lookup structure to reduce redundant matches check
+    processed_matches = mp.get_processed_matches(test_env=test_env)
+
+    # TODO: fill output data frame with fuzzy matching info
+
+        # (exclude previous matches and self matches)
+        # 
+
+
+    
+
+    print(processed_matches)
         
     # except Exception as e:
     #     print(f"Failed to load input data")

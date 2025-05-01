@@ -6,8 +6,26 @@ import utils.utils_io as uio
 from pos_xref.shared.processed_matches_config import ProcessedMatches
 from pos_xref.shared.matches_config import Matches
 
+def fill_output_file(test_env: bool):
+    '''
+    capture the current processed data fill with new fuzzy matches and similarity score
+    exclude matches already made and self matches
+    '''
 
-def get_previous_matches(test_env: bool) -> Dict[str, list]:
+
+    # get existing output data from files and lookup structure
+    processed_data_package = get_processed_matches(test_env=test_env)
+    output_file, processed_matches = processed_data_package
+
+    # fill output file with new matches
+    output_file['fuzzy_results'] = output_file['customer_name'].apply()
+    df = pd.DataFrame()
+    df.apply()
+
+    pass
+
+
+def get_processed_matches(test_env: bool) -> Dict[str, list]:
     '''
     returns a dict(list) to test if a fuzzy match has been matched before
     processed matches: confirmed matches, mismatch, or unreviewed
@@ -23,7 +41,6 @@ def get_previous_matches(test_env: bool) -> Dict[str, list]:
     previously_reviewed_info = [ProcessedMatches(test_env=test_env), Matches(test_env=test_env)]
     previously_matched_df = pd.DataFrame()
 
-
     # get pd, concat to final df, delete safe file
     for info in previously_reviewed_info:
         # create a safe (local copy) version, return the file path and data frame
@@ -37,7 +54,7 @@ def get_previous_matches(test_env: bool) -> Dict[str, list]:
     for norm, original in zip(previously_matched_df['normalized_name'], previously_matched_df['customer_name']):
         processed_matches[norm].append(original)
 
-    return processed_matches
+    return [df, processed_matches]
 
 
 def new_matches(norm_name, all_norm_names, name_mapping: Dict, previous_matches):
