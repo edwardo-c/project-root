@@ -1,4 +1,4 @@
-TEST_PROCESSED_FILE_PATH = r"C:\My\test\Path\processed_matches.csv" # for repo, point to .\data\processed\proccessed_matches.csv
+TEST_PROCESSED_FILE_PATH = r"C:\My\test\Path\processed_matches.csv" # for repo, point to .\pos_xref\data\processed\proccessed_matches.csv
 PROD_PROCESSED_FILE_PATH = r"H:\My\Prod\Path\processed_matches.csv" # not used in repo, for internal prod only
 
 class ProcessedMatches():
