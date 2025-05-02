@@ -1,2 +1,2 @@
-﻿acct_num,normalized_name,customer_name,acct_group,bill_to_state,bill_to_postal_code,match_type
-AMZ111111,amazon,AMAZON LLC.,,CA,90210,test
+﻿acct_num,normalized_name,customer_name,match_type
+AMA036353,amazon,AMAZON LLC.,self_match

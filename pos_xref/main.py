@@ -1,4 +1,5 @@
 from pos_xref.shared.combine_input_data import return_input_data
+from pos_xref.extract.self_matches import update_self_matches
 import pos_xref.extract.matching_pipeline as mp
 # for public repo, test_env should be True from project_root/run_pos_xref.py
 
@@ -7,10 +8,10 @@ def main(test_env:bool, year):
     # try:
 
     # get current customer data (all POS and direct)
-    df = return_input_data(test_env) # get input data
+    all_custs_df = return_input_data(test_env) # get input data
 
-    # TODO: import self matches into data/output/matches.csv
-    
+    # fill self matches into data/output/matches.csv
+    new_self_matches = update_self_matches(test_env, all_custs_df)
 
     # get previous matches lookup structure to reduce redundant matches check
     processed_matches = mp.get_processed_matches(test_env=test_env)

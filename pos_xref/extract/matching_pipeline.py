@@ -11,8 +11,6 @@ def fill_output_file(test_env: bool):
     capture the current processed data fill with new fuzzy matches and similarity score
     exclude matches already made and self matches
     '''
-
-
     # get existing output data from files and lookup structure
     processed_data_package = get_processed_matches(test_env=test_env)
     output_file, processed_matches = processed_data_package
