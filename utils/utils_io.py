@@ -7,13 +7,15 @@ from typing import Dict
 def read_safe_excel_file(orig_file_path: str, sheet_name: str = '', header_row: int = 0, ftype='xlsx') -> Dict:
     '''
     Makes a temporary copy of the Excel file and reads from that instead.
-    
+    sheet_name and header row must be explicitly passed only for xlsx files.
+    ftype = 'csv' required for csv files
     Args:
         file_path (str): Original Excel file path.
         sheet_name (str): name of the worksheet to read
         header_row (int): row index for headers
     Returns:
         Dict containing file path to temp file and dataframe captured from file
+        {'temp_file_path': temp_path, 'safe_data_frame': df}
     '''
     try:
         # create a temporary file path

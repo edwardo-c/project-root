@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import pos_xref.shared.direct_config as dc
 import pos_xref.shared.pos_config as pc
 import pos_xref.shared.utils as u
@@ -26,13 +27,20 @@ def _normalize_data(df:pd.DataFrame) -> pd.DataFrame:
     # convert columns to string type data types and dedupe
     df = df.astype({col:str for col in df.columns}).drop_duplicates()
 
-    df['normalized_name'] = df['customer_name'].apply(nd.normalize_name)
+    # normalize account group, if null fall back to normalize customer name
+    df['normalized_name'] = df.apply(
+        lambda row: nd.normalize_name(row['acct_group']) if pd.notna(row['acct_group']) and row['acct_group'] != ""
+        else nd.normalize_name(row['customer_name']),
+        axis=1
+        )
 
     # normalize postal codes
     df['bill_to_postal_code'] = df['bill_to_postal_code'].apply(nd.normalize_postal_code)
 
     # TODO: Normalize states
     df['bill_to_state'] = df['bill_to_state'].apply(str.upper)
+
+    print(df)
 
     return df
 
