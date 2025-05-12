@@ -26,11 +26,11 @@ def read_safe_excel_file(orig_file_path: str, sheet_name: str = '', header_row: 
         shutil.copy2(orig_file_path, temp_path)
 
         # read temporary file data frame
-        if ftype == 'xlsx':
+        if ftype == '.xlsx':
             if not (sheet_name) and (not header_row):
                 raise KeyError(f"missing sheet name or header row for {ftype} file")
             df = pd.read_excel(temp_path, sheet_name=sheet_name, header=header_row)
-        elif ftype == 'csv':
+        elif ftype == '.csv':
             df = pd.read_csv(temp_path)
         else:
             raise KeyError(f"{ftype} is an invalid file type")

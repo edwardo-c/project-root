@@ -27,7 +27,8 @@ def _normalize_data(df:pd.DataFrame) -> pd.DataFrame:
     # convert columns to string type data types and dedupe
     df = df.astype({col:str for col in df.columns}).drop_duplicates()
 
-    # normalize account group, if null fall back to normalize customer name
+    # TODO: normalize account group, if null fall back to normalize customer name
+    # still not working, need to understand this better
     df['normalized_name'] = df.apply(
         lambda row: nd.normalize_name(row['acct_group']) if pd.notna(row['acct_group']) and row['acct_group'] != ""
         else nd.normalize_name(row['customer_name']),
