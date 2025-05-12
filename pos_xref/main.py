@@ -3,31 +3,48 @@ from pos_xref.extract.self_matches import update_self_matches
 import pos_xref.extract.matching_pipeline as mp
 # for public repo, test_env should be True from project_root/run_pos_xref.py
 
-def main(test_env:bool, year):
-    
-    # try:
+'''
+think in terms of etl in order to scale this as a class based system instead
+'''
 
-    # get current customer data (all POS and direct)
-    all_custs_df = return_input_data(test_env) # get input data
-
-    # fill self matches into data/output/matches.csv
-    new_self_matches = update_self_matches(test_env, all_custs_df)
-
-    # get previous matches lookup structure to reduce redundant matches check
-    processed_matches = mp.get_processed_matches(test_env=test_env)
-
-    # TODO: fill output data frame with fuzzy matching info
-
-        # (exclude previous matches and self matches)
-        # 
-
-
+class Pipeline():
+    def __init__(self, source_file):
+        self.source_file = source_file
+        self.transformed_df = None
+        self.output_df = None
+    def __str__(self):
+        return f"POS Xref Main Pipeline Class"
     
 
-    print(processed_matches)
+
+
+
+
+# def main(test_env:bool, year):
+    
+#     # try:
+
+#     # get current customer data (all POS and direct)
+#     all_custs_df = return_input_data(test_env) # get input data
+
+#     # fill self matches into data/output/matches.csv
+#     new_self_matches = update_self_matches(test_env, all_custs_df)
+
+#     # get previous matches lookup structure to reduce redundant matches check
+#     processed_matches = mp.get_processed_matches(test_env=test_env)
+
+#     # TODO: fill output data frame with fuzzy matching info
+
+#         # (exclude previous matches and self matches)
+#         # 
+
+
+    
+
+#     print(processed_matches)
         
-    # except Exception as e:
-    #     print(f"Failed to load input data")
+#     # except Exception as e:
+#     #     print(f"Failed to load input data")
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+#     main()
