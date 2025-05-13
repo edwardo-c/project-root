@@ -3,7 +3,7 @@ shared utility functions for consolidating input data
 '''
 from typing import Dict
 
-def _column_rename_map(curr_cols, st_cols) -> Dict:
+def column_rename_map(curr_cols, st_cols) -> Dict:
     '''build a dict to rename current columns to standardized columns (st_cols)
     '''
     return {col: st_col for col, st_col in zip(curr_cols, st_cols)}
