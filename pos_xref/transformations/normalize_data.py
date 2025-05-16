@@ -22,6 +22,7 @@ def normalize_name(name:str) -> str:
 def normalize_postal_code(postal_code):
     '''converts a postal code into 5 digits or standardizes canada zips ("A1A 1A1")'''
     # TODO: convert the postal codes column to strings prior to clean_postal_code call
+    postal_code = str(postal_code)
 
     # capture only letters, 3 letters = CA postal code, or first five digits
     ca_pattern = re.compile(r'[a-z]', flags=re.IGNORECASE)
