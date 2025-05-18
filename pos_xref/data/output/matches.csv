@@ -1,2 +1,5 @@
 ﻿acct_num,normalized_name,customer_name,match_type
 AMA036353,amazon,AMAZON LLC.,self_match
+AMA036353,amazon,AMAZON DC 123,user_match
+TST111111,test company pro,TEST COMPANY PRO LLC.,self_match
+TST111111,test company pro,TEST CO PRO LLC.,user_match
