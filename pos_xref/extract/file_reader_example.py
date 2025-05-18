@@ -1,6 +1,6 @@
 import os
 import pandas as pd
-from pos_xref.shared.utils import column_rename_map
+from pos_xref.utils.df_utils import column_rename_map
 import pos_xref.transformations.normalize_data as nd
 from utils import utils_io as uio
 
@@ -58,7 +58,6 @@ class FileReader():
         self.file_details = {}
         self.df = None
     def __str__(self):
-        # TODO: update needed for refactor
         return "FileReader for test_env" if self.test_env else "FileReader for prod"
     
     def file_path_details(self):
@@ -88,31 +87,41 @@ class FileReader():
         '''
         direct and pos_sales requiring standardization of column names
         '''
-        # TODO: Identify other normalization steps required for each data frame  
+        # standardize column names and truncate only to standardized columns
         if self.ftype == "direct":
-            
-            # rename columns and truncate to only the renamed columns
             STANDARDIZED_COLUMNS = ['acct_num', 'customer_name', 'bill_to_state', 'bill_to_postal_code', 'acct_group']
-            self.df = self.df.rename(columns=column_rename_map(self.columns, STANDARDIZED_COLUMNS))[STANDARDIZED_COLUMNS]
-            # add normalized name series
-            self.df['normalized_name'] == self.df['customer_name'].apply(nd.normalize_name)
+        elif self.ftype == 'pos_sales':
+            STANDARDIZED_COLUMNS = ['customer_name', 'bill_to_postal_code', 'bill_to_state']
 
-        elif self.ftype == "pos_sales":
-            ...
+        self.df = self.df.rename(columns=column_rename_map(self.columns, STANDARDIZED_COLUMNS))[STANDARDIZED_COLUMNS] 
 
-        # add normalized name
+        self.df = self.df.drop_duplicates('customer_name')
+
+        if 'normalized_name' in self.df.columns:
+            return # early exit if normalized name already exists. 
+                   # Processed and match files will have normalized name
         
-
-        return ""
+        # add normalized names; use acct group name if it has one
+        if not 'acct_group' in self.df.columns:
+            self.df['normalized_name'] = self.df['customer_name'].apply(lambda row: nd.normalize_name(row) if pd.notna(row) else row)
+        else: 
+            self.df['normalized_name'] = self.df.apply(
+                lambda row: nd.normalize_name(row['customer_name']) if pd.isnull(row['acct_group'])
+                            else nd.normalize_name(row['acct_group']),
+                axis=1
+                )
         
-    # def _normalize_data():
-    #     ...
+        # clean postal code
+        self.df['bill_to_postal_code'] = self.df['bill_to_postal_code'].apply(nd.normalize_postal_code)
 
     def run(self):
         self.file_path_details()
         self.load_file_info()
         self.read_df()
-        self._normalize_df()
+        if (self.ftype == 'pos_sales') or (self.ftype == 'direct'):
+            ''' matches and processed are created pos normalization of raw data; 
+                normalization not needed'''
+            self._normalize_df()
 
         
 
