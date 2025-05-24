@@ -1,14 +1,10 @@
 from typing import Dict
-from collections import defaultdict
 from rapidfuzz import process
 import pandas as pd
 from pos_xref.extract.previous_matches import PreviousMatches
 from pos_xref.extract.file_reader import FileReader
 
 class Customer():
-    '''
-    what is needed in the output?
-    '''
     def __init__(self, acct_num, norm, orig, bill_to_state, bill_to_postal_code, fuzzy_matches):
         self.acct_num = acct_num
         self.norm = norm
@@ -26,7 +22,6 @@ class ProcessedOutput():
         self.fuzzy_matches_df = pd.DataFrame()
         self.self_matches_df = pd.DataFrame()
         self._prev_matches = {}
-        # self.reverse_name_map = {}
         self._direct_custs = pd.DataFrame()
         self._pos_custs = pd.DataFrame()
         self.name_map = {}
@@ -35,10 +30,6 @@ class ProcessedOutput():
         return f"Output data for Processed.csv"
 
     def _requirements(self):
-        '''
-        save the previous matches look up structure, used to eliminated duplicate matches in fuzzy matching
-        defaultdict(set)
-        '''
         pm = PreviousMatches(self.test_env)
         pm.run()
         self._prev_matches = pm.lookup
@@ -55,20 +46,15 @@ class ProcessedOutput():
         '''
         Return fuzzy matches for a given customer, excluding matches previously completed
         args:
-            all_customers: the customers to query against
-
-        Query against normalized names; return customer_name
-        exclude previously matched
-        TODO: exclude self matches for pos to pos 
+            norm: the normalized name version of the customer to search
+            choices: the customers to query against
         '''
-
         raw_matches = process.extract(query=norm, choices=choices, score_cutoff=88, limit=20)
         new_matches = []
         
-        # remove previous matches
         for match in raw_matches:
             orig = self.name_map[match[0]]
-            if not orig in self._prev_matches[norm]: 
+            if not orig in self._prev_matches[norm]: # exclude previous matches
                 '''append original, non-normalized name to return matches'''
                 new_matches.append(match)
 
@@ -76,10 +62,10 @@ class ProcessedOutput():
 
     def _build_name_maps(self) -> Dict:
         '''
-        builds a name map from normalized_name to customer_name
+        build a name map from normalized_name to customer_name (dict(str:str))
+        TODO: does this potentially overwrite something unexpected?
         '''
         self.name_map = {norm : orig for norm, orig in zip(self._pos_custs['normalized_name'], self._pos_custs['customer_name'])}
-        # self.reverse_name_map = {orig : norm for orig, norm in zip(self._pos_custs['customer_name'], self._pos_custs['normalized_name'])}
 
     def _matching_engine(self):
         '''
@@ -87,21 +73,21 @@ class ProcessedOutput():
         '''
          # fuzzy matching for direct to pos
         self._direct_custs['fuzzy_matches'] = self._direct_custs['normalized_name'].apply(
-                                                                                        lambda norm: 
-                                                                                        self._fuzzy_match(
-                                                                                            norm, 
-                                                                                            self._pos_custs['normalized_name'],
-                                                                                            )
-                                                                                        )
+            lambda norm: 
+            self._fuzzy_match(
+                norm, 
+                self._pos_custs['normalized_name']
+                )
+            )
         
         # fuzzy matching for pos to pos
         self._pos_custs['fuzzy_matches'] = self._pos_custs['normalized_name'].apply(
-                                                                                    lambda norm: 
-                                                                                    self._fuzzy_match(
-                                                                                        norm, 
-                                                                                        self._pos_custs['normalized_name'],
-                                                                                        )
-                                                                                    )
+            lambda norm: 
+            self._fuzzy_match(
+                norm, 
+                self._pos_custs['normalized_name']
+                )
+            )
 
     def _build_output_dfs(self):
         '''

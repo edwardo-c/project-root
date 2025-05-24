@@ -17,7 +17,7 @@ Thumbs.db
 .vscode/
 
 # Sensitive config
-pos_xref/shared/direct_config.py
+pos_xref/extract/file_reader.py
 
 # TODO List for dev
 pos_xref/TODO.md

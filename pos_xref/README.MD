@@ -1,26 +1,34 @@
 # POS Xref Pipeline
 
-This project is designed to safely extract customer names from Master POS (point of sale) and direct customers Excel files
-stored on a shared network.
-
-It's part of a larger internal tooling effort to standardize and automate cross-referencing of POS customer name variations and linking back to direct customers.
+Part of a larger internal tooling effort to standardize and automate cross-referencing of POS customer name variations back to direct customers;
+as well as cross referencing name variations amongst pos customers. 
 
 > **Problem this solves**:  
 > *How much has customer X purchased through direct AND indirect (POS [distributor's supplied data])?*
 
+**Example**:
+Distributor_1 sells to 'AMAZON.COM'
+Distributor_2 sells to 'amazon corporate'
+Internally, sales go to 'AMAZON CORP'
+
+**Solution**:
+1. Safely extract customer names from Master POS (point of sale) and direct customers Excel files stored on a shared network.
+2. Outputs fuzzy matches for user to manually scan and confirm crossreference
+3. re-uploads the users confirmed matches to master cross reference file
+
 ---
 
 ## Features
-
 - Safe reading of shared Excel files without locking them
-- Extracts and standardizes fields for years 2020–2025:
-  - `acct_num`  (only for direct accounts)
-  - `customer_name` (the name in the POS data)
+- Extracts, standardizes fields, and fuzzy matches data for user to confirm cross referencing 
+  - `acct_num`  
+  - `customer_name`
+  - `normalizzed_name`
   - `acct_group` 
-  - `bill_to_zip` 
+  - `bill_to_postal_code` 
   - `bill_to_state`
-- Clean, modular project structure with virtual environment
-
+- exclude previous matches/mismatches; reducing redundant user checks
+- # TODO: automatic uploading of user matches to finalized csv
 ---
 
 ## How to Run
@@ -39,20 +47,14 @@ It's part of a larger internal tooling effort to standardize and automate cross-
 
     pip install -r pos_xref/requirements.txt
 
-4. Copy the config templates:
+4. Copy the FileReader templates:
 
-    cp pos_xref/shared/pos_config_example.py pos_xref/pos_config.py
-    cp pos_xref/shared/direct_config_example.py pos_xref/direct_config.py
-    cp pos_xref/shared/matches_config_example.py pos_xref/matches_config.py
-    cp pos_xref/shared/processed_matches_config_example.py processed_matches_config.py 
+    cp pos_xref/shared/file_reader_example.py pos_xref/file_reader.py
 
-5. Open pos_config.py, direct_config.py, matches_config.py, & processed_matches_config.py:
+5. Open file_reader.py:
 
-    Ensure TEST_DIR in pos_config.py points to .\pos_xref\data\raw\
-    Ensure TEST_FILE_PATH in direct_config.py points to .\pos_xref\data\raw\direct_customers_export.xlsx
-    ENSURE TEST_MATCHES_FILE_PATH points to .\pos_xref\data\output\matches.csv
-    ENSURE TEST_PROCESSED_FILE_PATH points to .\pos_xref\data\processed\proccessed_matches.csv
+    Ensure func(test_file_details) points to: .\pos_xref\data\... (see comments in func for specifics)
 
-6. Run the script
-
+6. Run the main pipeline
+    # TODO: instructions for how to run
     python -m run_pos_xref.py

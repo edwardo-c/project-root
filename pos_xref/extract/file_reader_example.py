@@ -7,11 +7,9 @@ from utils import utils_io as uio
 
 def test_file_details(ftype: str) -> dict:
     '''
-    return all file paths for the test system
+    return all pertinent info for the files in the test system
     sheet_name and header row not required for csv file types
-    '''
     
-    '''
     for repo, point these file paths at:
         direct: .\pos_xref\data\raw\direct_customers_export.xlsx
         pos_sales: .\pos_xref\data\raw\Incentive Comp - 2025.xlsx
@@ -20,7 +18,7 @@ def test_file_details(ftype: str) -> dict:
     '''
 
     d = {
-        'direct' : {'file_path': r"test\path\pos_xref\data\raw\direct_customers_export.xlsx",
+        'direct' : {'file_path': r"C:\test\path\pos_xref\data\raw\direct_customers_export.xlsx",
                     'sheet_name': 'Data',
                     'header_row': 0,
                     'columns': ['Customer ID', 'Customer Name', 'State', 'Postal Code', 'Account Group']},
@@ -35,7 +33,13 @@ def test_file_details(ftype: str) -> dict:
 
 def prod_file_details(ftype: str) -> dict:
     '''
-    return all file paths for the test system
+    FOR REPO:
+    PROD_FILE_DETAILS ARE NOT USED IN THE GITHUB REPO
+    This is a place holder for the real internal system. 
+    The files processed exist on a shared network drive.
+    
+    Original comments:
+    return all file paths for the prod system
     sheet_name and header row not required for csv file types
     '''
     d = {
@@ -122,7 +126,5 @@ class FileReader():
             ''' matches and processed are created pos normalization of raw data; 
                 normalization not needed'''
             self._normalize_df()
-
-        
 
 
