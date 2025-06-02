@@ -28,7 +28,7 @@ Internally, sales go to 'AMAZON CORP'
   - `bill_to_postal_code` 
   - `bill_to_state`
 - exclude previous matches/mismatches; reducing redundant user checks
-- # TODO: automatic uploading of user matches to finalized csv
+- TODO: automatic uploading of user matches to finalized csv
 ---
 
 ## How to Run
@@ -56,5 +56,5 @@ Internally, sales go to 'AMAZON CORP'
     Ensure func(test_file_details) points to: .\pos_xref\data\... (see comments in func for specifics)
 
 6. Run the main pipeline
-    # TODO: instructions for how to run
+    TODO: instructions for how to run
     python -m run_pos_xref.py
