@@ -20,7 +20,6 @@ class ProcessedOutput():
     def __init__(self, test_env):
         self.test_env = test_env
         self.fuzzy_matches_df = pd.DataFrame()
-        self.self_matches_df = pd.DataFrame()
         self._prev_matches = {}
         self._direct_custs = pd.DataFrame()
         self._pos_custs = pd.DataFrame()
@@ -105,26 +104,20 @@ class ProcessedOutput():
         for cust in customers:
             for fuzzy_match in cust.fuzzy_matches:
                 match_score = fuzzy_match[1]
-                if match_score < 100:
-                    row_index = len(self.fuzzy_matches_df)
-
-                    self.fuzzy_matches_df.loc[row_index, 'acct_num'] = cust.acct_num
-                    self.fuzzy_matches_df.loc[row_index, 'normalized_name'] = cust.norm
-                    self.fuzzy_matches_df.loc[row_index, 'customer_name'] = cust.orig
-                    self.fuzzy_matches_df.loc[row_index, 'bill_to_state'] = cust.bill_to_state
-                    self.fuzzy_matches_df.loc[row_index, 'bill_to_postal_code'] = cust.bill_to_postal_code
-                    self.fuzzy_matches_df.loc[row_index, 'fuzzy_match'] = self.name_map[fuzzy_match[0]]
-                    self.fuzzy_matches_df.loc[row_index, 'match_score'] = round(fuzzy_match[1],2)
+                row_index = len(self.fuzzy_matches_df)
+                self.fuzzy_matches_df.loc[row_index, 'acct_num'] = cust.acct_num
+                self.fuzzy_matches_df.loc[row_index, 'normalized_name'] = cust.norm
+                self.fuzzy_matches_df.loc[row_index, 'customer_name'] = cust.orig
+                self.fuzzy_matches_df.loc[row_index, 'bill_to_state'] = cust.bill_to_state
+                self.fuzzy_matches_df.loc[row_index, 'bill_to_postal_code'] = cust.bill_to_postal_code
+                self.fuzzy_matches_df.loc[row_index, 'fuzzy_match'] = self.name_map[fuzzy_match[0]]
+                self.fuzzy_matches_df.loc[row_index, 'match_score'] = round(fuzzy_match[1],2)
+                if match_score == 100:                
+                    self.fuzzy_matches_df.loc[row_index, 'match_type'] = "self_match"
                 else:
-                    r_i = len(self.self_matches_df)
-
-                    self.self_matches_df.loc[r_i, 'acct_num'] = cust.acct_num
-                    self.self_matches_df.loc[r_i, 'normalized_name'] = cust.norm
-                    self.self_matches_df.loc[r_i, 'customer_name'] = cust.orig
-                    self.self_matches_df.loc[r_i, 'match_type'] = 'self_match'
+                    self.fuzzy_matches_df.loc[row_index, 'match_type'] = "fuzzy_match"    
 
     def format_output_dfs(self):
-        self.self_matches_df.sort_values(by=['normalized_name'], inplace=True)
         self.fuzzy_matches_df.sort_values(by=['normalized_name'], inplace=True)
 
     def run(self):
