@@ -29,7 +29,9 @@ def read_safe_excel_file(orig_file_path: str, sheet_name: str = '', header_row: 
         if ftype == '.xlsx':
             if not (sheet_name) and (not header_row):
                 raise KeyError(f"missing sheet name or header row for {ftype} file")
+            
             df = pd.read_excel(temp_path, sheet_name=sheet_name, header=header_row)
+            
         elif ftype == '.csv':
             df = pd.read_csv(temp_path)
         else:
@@ -38,7 +40,7 @@ def read_safe_excel_file(orig_file_path: str, sheet_name: str = '', header_row: 
         return {'temp_file_path': temp_path, 'safe_data_frame': df}
     
     except Exception as e:
-        raise RuntimeError(f"Failed to read Excel file safely: {e}")
+        raise RuntimeError(f"Failed to read Excel file safely: {e}, {temp_path}")
 
 
 def del_safe_path(safe_path_info: Dict):
