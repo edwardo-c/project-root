@@ -45,4 +45,4 @@ class FileExporter():
     def run(self):
         self._requirements()
         self._build_output_df()
-        # self._export() # intentionally left _export() out to review output
+        self._export()
