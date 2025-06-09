@@ -40,7 +40,7 @@ def read_safe_excel_file(orig_file_path: str, sheet_name: str = '', header_row: 
         return {'temp_file_path': temp_path, 'safe_data_frame': df}
     
     except Exception as e:
-        raise RuntimeError(f"Failed to read Excel file safely: {e}, {temp_path}")
+        raise RuntimeError(f"Failed to read Excel file safely: {e}, {os.path.basename(orig_file_path)}")
 
 
 def del_safe_path(safe_path_info: Dict):
