@@ -1,4 +1,19 @@
 import re
+import pandas as pd
+
+def normalize_df(df: pd.DataFrame):
+    '''
+    run data frame through the normalization process
+    args:
+        df: data frame to be normalized
+    return:
+        the data processed through the normalization functions
+    '''
+    df['normalized_name'] = df['customer_name'].apply(normalize_name)
+    # TODO: make more module to accept different 'name' columns
+    # TODO: normalize other colummns, left undone since these are 
+    # 'nice to haves' in the system, not requirements
+    return df
 
 def normalize_name(name:str) -> str:
     '''
