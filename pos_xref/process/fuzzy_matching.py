@@ -26,9 +26,10 @@ class FuzzyMatcher():
         
     def _concat_dfs(self):
         self.df_to_match = pd.concat(self.sep_dfs, ignore_index=True)
+
     def _fuzzy_matching(self):
         '''
-        add a column with matching results
+        return matching results in seperate column
         '''
         choices = set(self.df_to_match[self.match_col])
 
@@ -36,6 +37,7 @@ class FuzzyMatcher():
             lambda x: 
             process.extract(x, choices=choices, score_cutoff=self.score_cutoff)
         )
+        
     def run(self):
         self._concat_dfs()
         self._fuzzy_matching()

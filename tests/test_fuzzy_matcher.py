@@ -32,5 +32,3 @@ def test_fuzzy_matcher():
     
     # check for nulls
     assert all(pd.notna(matcher.df_to_match['fuzzy_matches']))
-
-    print(matcher.df_to_match)
