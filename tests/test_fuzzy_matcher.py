@@ -19,11 +19,7 @@ def test_fuzzy_matcher():
     foreign_data = {'acct_num':[None, None], 
                     'customer_name':['AMAZON LLC', 'AMAZON DC']}
     foreign_df = pd.DataFrame(foreign_data)
-
-    # run through matching engine
     
-    # passing in customer_name since data is yet to be normalized, default for FuzzyMatcher
-    # is 'normalized_name'
     matcher = FuzzyMatcher(direct_df, foreign_df, match_col='customer_name')
     matcher.run()
     
@@ -32,3 +28,11 @@ def test_fuzzy_matcher():
     
     # check for nulls
     assert all(pd.notna(matcher.df_to_match['fuzzy_matches']))
+
+    # count strings in fuzzy_matches
+    assert list(matcher.df_to_match['fuzzy_matches'])
+
+    # count number of fuzzy matches
+    '''must be sensative enough to catch all matches for the test frame'''
+    matcher.df_to_match['count_helper'] = matcher.df_to_match['fuzzy_matches'].apply(len)
+    assert pd.Series.sum(matcher.df_to_match['count_helper']) == 9
