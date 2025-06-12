@@ -13,7 +13,7 @@ class FuzzyMatcher():
     requirements: 
         column name for matching must be the same in all data frames
     '''
-    def __init__(self, *sep_dfs, match_col='normalized_name', score_cutoff=50):
+    def __init__(self, *sep_dfs, match_col='normalized_name', score_cutoff=70):
         if not sep_dfs:
             raise ValueError("At least one DataFrame must be provided.")
 
