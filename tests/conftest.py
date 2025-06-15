@@ -2,7 +2,7 @@ import pytest
 import pandas as pd
 
 @pytest.fixture
-def primary_test_data():
+def direct_test_data():
     return pd.DataFrame(
         {
             "acct_num": [
