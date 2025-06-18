@@ -10,4 +10,5 @@ and uses [Semantic Versioning](https://semver.org/).
 - Placeholder for upcoming features
 
 ### Changed
-- 2025-06-11: Refactored FuzzyMatcher class to allow for n dataframe inputs
+
+- Refactored FuzzyMatcher class to allow for n dataframe inputs
