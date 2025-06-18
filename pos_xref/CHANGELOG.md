@@ -7,8 +7,9 @@ and uses [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 ### Added
+- tests for XRefDataSet
 - Placeholder for upcoming features
 
 ### Changed
-
+- Built XRefDataSet class to accept different data sets
 - Refactored FuzzyMatcher class to allow for n dataframe inputs
