@@ -5,12 +5,18 @@ import pandas as pd
 def direct_test_data():
     return pd.DataFrame(
         {
-            "acct_num": [
-                "AMZ135664",
+            'Customer ID': [
+                'AMZ135664',
             ],
-            "customer_name": [
-                "AMAZON DIRECT",
+            'Customer Name': [
+                'AMAZON DIRECT INC',
             ],
+            'State': [
+                'BC'
+            ],
+            'Postal Code': [
+                'V5Y 1L3'
+            ]
         }
     )
 
@@ -19,13 +25,17 @@ def direct_test_data():
 def foreign_test_data():
     return pd.DataFrame(
        {
-           "acct_num":[
-               None,
-               None,
-           ],
-           'customer_name':[
+           'SoldToName':[
                'AMAZON LLC',
-               'AMAZON DC'
+               'AMAZON DC CORP'
+           ],
+           'BillToCustomerZip': [
+               '44720-6902',
+               'V5Y 1L3'
+           ],
+           'BillToCustomerState':[
+               'OH',
+               'BC'
            ]
        } 
     )
