@@ -11,5 +11,6 @@ and uses [Semantic Versioning](https://semver.org/).
 - Placeholder for upcoming features
 
 ### Changed
+- modified pytest.fixture to test normalization of dirty data
 - Built XRefDataSet class to accept different data sets
 - Refactored FuzzyMatcher class to allow for n dataframe inputs
